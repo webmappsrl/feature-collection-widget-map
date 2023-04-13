@@ -58,34 +58,28 @@ export class MapComponent implements OnInit {
   }
 
   private _buildGeojson(geojson: any) {
-    const red = new Style({
-      stroke: new Stroke({
-        color: '#ff0000',
-        width: 2.25,
-      }),
-      fill: new Fill({
-        color: '#ff333355',
-      }),
-    });
-    const feature = new GeoJSON({
+    const features = new GeoJSON({
       featureProjection: 'EPSG:3857',
-    }).readFeature(geojson);
-    feature.setStyle(red);
+    }).readFeatures(geojson);
     const vectorSource = new VectorSource({
       format: new GeoJSON(),
-      features: [feature],
+      features: features,
     });
-    this.vectorLayer = new VectorLayer({
-      source: vectorSource,
-      style: new Style({
+    const styleFunction = (feature: any) => {
+      const properties = feature.getProperties();
+      return new Style({
         stroke: new Stroke({
-          color: 'blue',
+          color: properties.strokeColor,
           width: 10,
         }),
         fill: new Fill({
-          color: 'rgba(255, 255, 0, 1)',
+          color: properties.fillColor,
         }),
-      }),
+      });
+    };
+    this.vectorLayer = new VectorLayer({
+      source: vectorSource,
+      style: styleFunction,
       updateWhileAnimating: true,
       updateWhileInteracting: true,
       zIndex: 1,
