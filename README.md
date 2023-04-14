@@ -37,7 +37,7 @@ in `@ngModule` bootstrap indicates which component of the project will be built
 })
  ```
  Now launch from the terminal inside the component path
-`ng add @angular/elements`
+`ng build --prod --output-hashing=none`
 
 Now inside the `dist` folder (or the one that was initially indicated via `outputPath`in `angular.json`) we will find the files to be used in order to include the web component in an html page (`main.js, polifyll.js, runtime.js, style.css`)
 
