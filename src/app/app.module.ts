@@ -16,8 +16,10 @@ import { HttpClientModule } from '@angular/common/http';
 })
 export class AppModule {
   constructor(private injector: Injector) {
-    const mapElement = createCustomElement(MapComponent, { injector });
-    customElements.define('app-map', mapElement);
+    if (location.search.includes('web-component=true')) {
+      const mapElement = createCustomElement(MapComponent, { injector });
+      customElements.define('app-map', mapElement);
+    }
   }
 
   ngDoBootstrap() {}

@@ -16,7 +16,7 @@
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
-      "architect": {
+      "architect": { 
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
@@ -53,7 +53,7 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
+                  "maximumWarning": "550kb",
                   "maximumError": "1mb"
                 },
                 {

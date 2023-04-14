@@ -70,7 +70,7 @@ export class MapComponent implements OnInit {
       return new Style({
         stroke: new Stroke({
           color: properties.strokeColor,
-          width: 10,
+          width: 5,
         }),
         fill: new Fill({
           color: properties.fillColor,
