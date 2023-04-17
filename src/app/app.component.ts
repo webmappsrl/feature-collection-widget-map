@@ -124,9 +124,6 @@ export class AppComponent implements OnInit {
     }
   }
 
-  // private _buildParcelUrl(parcel: number): string {
-  //   return `https://sisteco.maphub.it/api/v1/geom/cadastralparcel/${parcel}`;
-  // }
   private _initMap(): void {
     this._view = new View({
       maxZoom: 22,
