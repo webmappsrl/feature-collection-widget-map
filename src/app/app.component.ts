@@ -23,7 +23,7 @@ import Fill from 'ol/style/Fill';
 import Stroke from 'ol/style/Stroke';
 import Style from 'ol/style/Style';
 @Component({
-  selector: 'app-map',
+  selector: 'feature-collection-widget-map',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   encapsulation: ViewEncapsulation.None,
@@ -32,17 +32,18 @@ export class AppComponent implements OnInit {
   private _view: View | undefined;
 
   @Input() duration: number = 0;
+  @Input() geojsonUrl: string | undefined;
   @Input() maxZoom: number = 17;
   @Input() padding: number = 10;
-  @Input() parcel: number | undefined;
   @Input() strokeWidth: number = 2;
 
   map: Map | undefined;
   vectorLayer: VectorLayer<Vector<Geometry>> | undefined;
 
   constructor(private _http: HttpClient, private _elementRef: ElementRef) {
-    this.parcel =
-      this._elementRef.nativeElement.getAttribute('parcel') ?? this.parcel;
+    this.geojsonUrl =
+      this._elementRef.nativeElement.getAttribute('geojsonUrl') ??
+      this.geojsonUrl;
     this.strokeWidth =
       this._elementRef.nativeElement.getAttribute('strokeWidth') ??
       this.strokeWidth;
@@ -74,12 +75,10 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this._initMap();
-    if (this.parcel != null) {
-      this._http
-        .get<any>(this._buildParcelUrl(this.parcel))
-        .subscribe((geojson) => {
-          this._buildGeojson(geojson);
-        });
+    if (this.geojsonUrl != null) {
+      this._http.get<any>(this.geojsonUrl).subscribe((geojson) => {
+        this._buildGeojson(geojson);
+      });
     }
   }
 
@@ -123,10 +122,6 @@ export class AppComponent implements OnInit {
         this.fitView(extent, optOptions);
       }
     }
-  }
-
-  private _buildParcelUrl(parcel: number): string {
-    return `https://sisteco.maphub.it/api/v1/geom/cadastralparcel/${parcel}`;
   }
 
   private _initMap(): void {

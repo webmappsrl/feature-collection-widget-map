@@ -16,6 +16,6 @@ import { CommonModule } from '@angular/common';
 export class AppModule {
   constructor(private injector: Injector) {
     const mapElement = createCustomElement(AppComponent, { injector });
-    customElements.define('app-map', mapElement);
+    customElements.define('feature-collection-widget-map', mapElement);
   }
 }

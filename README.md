@@ -26,7 +26,7 @@ Inside the `app.module.ts` file make the following changes
 export class AppModule {
   constructor(private injector: Injector) {
     const mapElement = createCustomElement(AppComponent, { injector });
-    customElements.define('app-map', mapElement);
+    customElements.define('feature-collection-widget-map', mapElement);
   }
   }
   ```
@@ -46,7 +46,7 @@ Now inside the `dist` folder (or the one that was initially indicated via `outpu
 ## Usage
 Once the web component has been created here's how to include it in an html page
 ```html
-  <app-map parcel="529" strokeWidth="5" padding="20" maxZoom="15" duration="5"></app-map>
+  <feature-collection-widget-map parcel="529" strokeWidth="5" padding="20" maxZoom="15" duration="5"></feature-collection-widget-map>
 ```
 
 <div style="overflow-x:auto;">
