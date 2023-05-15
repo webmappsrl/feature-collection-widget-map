@@ -36,7 +36,8 @@ export class AppComponent implements OnInit {
   @Input() maxZoom: number = 17;
   @Input() padding: number = 10;
   @Input() strokeWidth: number = 2;
-
+  @Input() fillColor: string = 'rgba(255, 92, 0, 1)';
+  @Input() strokeColor: string = 'rgba(255, 92, 0, 1)';
   map: Map | undefined;
   vectorLayer: VectorLayer<Vector<Geometry>> | undefined;
 
@@ -53,6 +54,12 @@ export class AppComponent implements OnInit {
       this._elementRef.nativeElement.getAttribute('maxZoom') ?? this.maxZoom;
     this.duration =
       this._elementRef.nativeElement.getAttribute('duration') ?? this.duration;
+    this.fillColor =
+      this._elementRef.nativeElement.getAttribute('fillColor') ??
+      this.fillColor;
+    this.strokeColor =
+      this._elementRef.nativeElement.getAttribute('strokeColor') ??
+      this.strokeColor;
   }
 
   fitView(
@@ -76,7 +83,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this._initMap();
     if (this.geojsonUrl != null) {
-      this._http.get<any>(this.geojsonUrl).subscribe((geojson) => {
+      this._http.get<any>(this.geojsonUrl).subscribe((geojson:any) => {
         this._buildGeojson(geojson);
       });
     }
@@ -94,11 +101,13 @@ export class AppComponent implements OnInit {
       const properties = feature.getProperties();
       return new Style({
         stroke: new Stroke({
-          color: properties.strokeColor,
+          color: properties.strokeColor
+            ? properties.strokeColor
+            : this.strokeColor,
           width: this.strokeWidth,
         }),
         fill: new Fill({
-          color: properties.fillColor,
+          color: properties.fillColor ? properties.fillColor : this.fillColor,
         }),
       });
     };
