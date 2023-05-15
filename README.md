@@ -75,7 +75,7 @@ Now your custom domain is ready to be shared
 ## Usage
 Once the web component has been created here's an example how to include it in an html page
 ```html
-  <feature-collection-widget-map geojsonUrl="https://sisteco.maphub.it/api/v1/geom/cadastralparcel/664" strokeWidth="5" padding="20" maxZoom="15" duration="5"></feature-collection-widget-map>
+  <feature-collection-widget-map geojsonUrl="https://sisteco.maphub.it/api/v1/geom/cadastralparcel/664" strokeWidth="5" padding="20" maxZoom="15" duration="5" fillColor="rgba(28, 146, 51, 1)" strokeColor="rgba(58, 146, 51, 1)"></feature-collection-widget-map>
 ```
 Copy and paste on your html code the following scripts given in the code below
 ```html
@@ -91,9 +91,9 @@ Copy and paste on your html code the following scripts given in the code below
     <feature-collection-widget-map
       geojsonurl="https://sisteco.maphub.it/api/v1/geom/cadastralparcel/664"
     ></feature-collection-widget-map>
-    <script src="https://cdn.statically.io/gh/webmappsrl/feature-collection-widget-map/8778f562/dist/runtime.js" defer></script>
-    <script src="https://cdn.statically.io/gh/webmappsrl/feature-collection-widget-map/8778f562/dist/polyfills.js" defer></script>
-    <script src="https://cdn.statically.io/gh/webmappsrl/feature-collection-widget-map/8778f562/dist/main.js" defer></script>
+    <script src="https://cdn.statically.io/gh/webmappsrl/feature-collection-widget-map/master/dist/runtime.js" defer></script>
+    <script src="https://cdn.statically.io/gh/webmappsrl/feature-collection-widget-map/master/dist/polyfills.js" defer></script>
+    <script src="https://cdn.statically.io/gh/webmappsrl/feature-collection-widget-map/master/dist/main.js" defer></script>
   </body>
 ```
 

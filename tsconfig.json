@@ -25,6 +25,8 @@
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
-    "strictTemplates": true
+    "strictTemplates": true,
+    "typeRoots": ["node_modules/2@types"],
+    "types": ["resize-observer-browser"],
   }
 }
