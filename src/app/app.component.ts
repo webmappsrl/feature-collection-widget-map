@@ -36,8 +36,8 @@ export class AppComponent implements OnInit {
   @Input() maxZoom: number = 17;
   @Input() padding: number = 10;
   @Input() strokeWidth: number = 2;
-  @Input() fillColor: string = 'rgba(255, 92, 0, 1)';
-  @Input() strokeColor: string = 'rgba(255, 92, 0, 1)';
+  @Input() fillColor: string = 'rgba(255, 0, 0, 1)';
+  @Input() strokeColor: string = 'rgba(255, 255, 255, 1)';
   map: Map | undefined;
   vectorLayer: VectorLayer<Vector<Geometry>> | undefined;
 

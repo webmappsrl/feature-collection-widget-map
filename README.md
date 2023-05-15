@@ -136,8 +136,20 @@ Copy and paste on your html code the following scripts given in the code below
         <td>0</td>
         <td>Input property for the component, which accepts a numeric value representing the duration in milliseconds for the map view to animate while adjusting to fit the parcel. If a value is not provided, it defaults to 0, meaning no animation.</td>
       </tr>
+      <tr>
+        <td>fillColor</td>
+        <td>string</td>
+        <td>rgba(255, 0, 0, 1)</td>
+        <td>Input allows you to specify the fill color of the GeoJSON features on the map. It accepts a string representing a color in RGBA format. The default value is `'rgba(255, 0, 0, 1)'`, which corresponds to red. You can modify this value to change the fill color according to your needs.</td>
+      </tr>
+      <tr>
+        <td>strokeColor</td>
+        <td>string</td>
+        <td>rgba(255, 255, 255, 1)</td>
+        <td>Input parameter allows you to set the color of the stroke (outline) for the GeoJSON features on the map. It takes a string representing a color in RGBA format. The default stroke color is `'rgba(255, 255, 255, 1)'`, which is white. You can adjust this value to customize the stroke color as per your requirements.</td>
+      </tr>
     </tbody>
   </table>
 </div>
 
-The style of strokeColor and the fillColor are managed directly by the features of the input geojson and are not modifiable.
+If neither the `fillColor` and the `strokeColor` input values are provided, they will default to their pre-set values ('rgba(255, 0, 0, 1)' and 'rgba(255, 255, 255, 1)', respectively). However, if your GeoJSON data includes properties for 'fillColor' and 'strokeColor', these values will be used instead. In case these properties are missing in the GeoJSON data, the component will fall back to using the default values.
