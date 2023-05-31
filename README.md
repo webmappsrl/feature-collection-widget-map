@@ -75,7 +75,7 @@ Now your custom domain is ready to be shared
 ## Usage
 Once the web component has been created here's an example how to include it in an html page
 ```html
-  <feature-collection-widget-map geojsonUrl="https://sisteco.maphub.it/api/v1/geom/cadastralparcel/664" strokeWidth="5" padding="20" maxZoom="15" duration="5" fillColor="rgba(28, 146, 51, 1)" strokeColor="rgba(58, 146, 51, 1)"></feature-collection-widget-map>
+  <feature-collection-widget-map geojsonUrl="https://sisteco.maphub.it/api/v1/geom/cadastralparcel/664" strokeWidth="5" padding="20" maxZoom="15" duration="5" fillColor="rgba(28, 146, 51, 1)" strokeColor="rgba(58, 146, 51, 1)" pointRadius="3" pointFillColor="rgba(190, 161, 161, 1)" pointStrokeColor="rgba(29, 235, 67, 1)"></feature-collection-widget-map>
 ```
 Copy and paste on your html code the following scripts given in the code below
 ```html
@@ -148,8 +148,29 @@ Copy and paste on your html code the following scripts given in the code below
         <td>rgba(255, 255, 255, 1)</td>
         <td>Input parameter allows you to set the color of the stroke (outline) for the GeoJSON features on the map. It takes a string representing a color in RGBA format. The default stroke color is `'rgba(255, 255, 255, 1)'`, which is white. You can adjust this value to customize the stroke color as per your requirements.</td>
       </tr>
+      <tr>
+        <td>pointRadius</td>
+        <td>number</td>
+        <td>15</td>
+        <td>Input allows you to set the radius of points (in pixels) for features on your map. By default, the radius is set to 15 pixels. This value can be adjusted to better suit the aesthetic and visibility requirements of your specific application.</td>
+      </tr>
+      <tr>
+        <td>pointFillColor</td>
+        <td>string</td>
+        <td>rgba(255, 0, 0, 1)</td>
+        <td>Input allows you to customize the fill color of the points on your map. The color is specified as an RGBA value, with the format 'rgba(r, g, b, a)', where 'r', 'g', and 'b' represent the red, green, and blue color components (ranging from 0 to 255), and 'a' represents the alpha (transparency) of the color (ranging from 0.0 to 1.0). The default color is 'rgba(255, 0, 0, 1)', which is a fully opaque red. Change this to any valid RGBA color to customize the appearance of your map points.</td>
+      </tr>
+      <tr>
+        <td>pointStrokeColor:</td>
+        <td>string</td>
+        <td>rgba(255, 255, 255, 1)</td>
+        <td>Input determines the stroke (outline) color for the points on the map. It's specified as an RGBA value, following the format 'rgba(r, g, b, a)', where 'r', 'g', and 'b' are the red, green, and blue color components respectively (ranging from 0 to 255), and 'a' represents the alpha (transparency) level (ranging from 0.0 to 1.0). The default stroke color is 'rgba(255, 255, 255, 1)', representing white. This input allows you to customize the outline of your map points with any valid RGBA color.</td>
+      </tr>
     </tbody>
   </table>
 </div>
 
-If neither the `fillColor` and the `strokeColor` input values are provided, they will default to their pre-set values ('rgba(255, 0, 0, 1)' and 'rgba(255, 255, 255, 1)', respectively). However, if your GeoJSON data includes properties for 'fillColor' and 'strokeColor', these values will be used instead. In case these properties are missing in the GeoJSON data, the component will fall back to using the default values.
+- If neither the `fillColor`, `strokeColor`, `pointRadius`, `pointFillColor`, nor `pointStrokeColor` input values are provided, they will each default to their pre-set values ('rgba(255, 0, 0, 1)', 'rgba(255, 255, 255, 1)', 15, 'rgba(255, 0, 0, 1)', and 'rgba(255, 255, 255, 1)' respectively). 
+- However, if your GeoJSON data includes properties for 'fillColor', 'strokeColor', 'pointRadius', 'pointFillColor', and 'pointStrokeColor', these values will be used instead. 
+- In case these properties are missing in the GeoJSON data, the component will fall back to using the default values.
+

@@ -7,7 +7,7 @@ import {
   SimpleChanges,
   ElementRef,
 } from '@angular/core';
-
+import CircleStyle from 'ol/style/Circle';
 import Map from 'ol/Map';
 import View, { FitOptions } from 'ol/View';
 import { defaults as defaultControls } from 'ol/control';
@@ -38,6 +38,10 @@ export class AppComponent implements OnInit {
   @Input() strokeWidth: number = 2;
   @Input() fillColor: string = 'rgba(255, 0, 0, 1)';
   @Input() strokeColor: string = 'rgba(255, 255, 255, 1)';
+  @Input() pointRadius: number = 15;
+  @Input() pointFillColor: string = 'rgba(255, 0, 0, 1)';
+  @Input() pointStrokeColor: string = 'rgba(255, 255, 255, 1)';
+  @Input() pointStrokeWidth: number = 5;
   map: Map | undefined;
   vectorLayer: VectorLayer<Vector<Geometry>> | undefined;
 
@@ -60,6 +64,18 @@ export class AppComponent implements OnInit {
     this.strokeColor =
       this._elementRef.nativeElement.getAttribute('strokeColor') ??
       this.strokeColor;
+    this.pointRadius =
+      this._elementRef.nativeElement.getAttribute('pointRadius') ??
+      this.pointRadius;
+    this.pointFillColor =
+      this._elementRef.nativeElement.getAttribute('pointFillColor') ??
+      this.pointFillColor;
+    this.pointStrokeColor =
+      this._elementRef.nativeElement.getAttribute('pointStrokeColor') ??
+      this.pointStrokeColor;
+    this.pointStrokeWidth =
+      this._elementRef.nativeElement.getAttribute('pointStrokeWidth') ??
+      this.pointStrokeWidth;
   }
 
   fitView(
@@ -83,7 +99,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this._initMap();
     if (this.geojsonUrl != null) {
-      this._http.get<any>(this.geojsonUrl).subscribe((geojson:any) => {
+      this._http.get<any>(this.geojsonUrl).subscribe((geojson: any) => {
         this._buildGeojson(geojson);
       });
     }
@@ -99,6 +115,18 @@ export class AppComponent implements OnInit {
     });
     const styleFunction = (feature: any) => {
       const properties = feature.getProperties();
+      const geometryType = feature.getGeometry().getType();
+      if (geometryType === 'Point') {
+        const image = new CircleStyle({
+          radius: this.pointRadius,
+          fill: new Fill({ color: this.pointFillColor }),
+          stroke: new Stroke({
+            color: this.pointStrokeColor,
+            width: this.pointStrokeWidth,
+          }),
+        });
+        return new Style({ image });
+      }
       return new Style({
         stroke: new Stroke({
           color: properties.strokeColor
