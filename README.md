@@ -161,7 +161,7 @@ Copy and paste on your html code the following scripts given in the code below
         <td>Input allows you to customize the fill color of the points on your map. The color is specified as an RGBA value, with the format 'rgba(r, g, b, a)', where 'r', 'g', and 'b' represent the red, green, and blue color components (ranging from 0 to 255), and 'a' represents the alpha (transparency) of the color (ranging from 0.0 to 1.0). The default color is 'rgba(255, 0, 0, 1)', which is a fully opaque red. Change this to any valid RGBA color to customize the appearance of your map points.</td>
       </tr>
       <tr>
-        <td>pointStrokeColor:</td>
+        <td>pointStrokeColor</td>
         <td>string</td>
         <td>rgba(255, 255, 255, 1)</td>
         <td>Input determines the stroke (outline) color for the points on the map. It's specified as an RGBA value, following the format 'rgba(r, g, b, a)', where 'r', 'g', and 'b' are the red, green, and blue color components respectively (ranging from 0 to 255), and 'a' represents the alpha (transparency) level (ranging from 0.0 to 1.0). The default stroke color is 'rgba(255, 255, 255, 1)', representing white. This input allows you to customize the outline of your map points with any valid RGBA color.</td>
