@@ -38,10 +38,10 @@ export class AppComponent implements OnInit {
   @Input() strokeWidth: number = 2;
   @Input() fillColor: string = 'rgba(255, 0, 0, 1)';
   @Input() strokeColor: string = 'rgba(255, 255, 255, 1)';
-  @Input() pointRadius: number = 15;
-  @Input() pointFillColor: string = 'rgba(255, 0, 0, 1)';
-  @Input() pointStrokeColor: string = 'rgba(255, 255, 255, 1)';
-  @Input() pointStrokeWidth: number = 5;
+  @Input() poiRadius: number = 15;
+  @Input() poiFillColor: string = 'rgba(255, 0, 0, 1)';
+  @Input() poiStrokeColor: string = 'rgba(255, 255, 255, 1)';
+  @Input() poiStrokeWidth: number = 5;
   map: Map | undefined;
   vectorLayer: VectorLayer<Vector<Geometry>> | undefined;
 
@@ -64,18 +64,18 @@ export class AppComponent implements OnInit {
     this.strokeColor =
       this._elementRef.nativeElement.getAttribute('strokeColor') ??
       this.strokeColor;
-    this.pointRadius =
-      this._elementRef.nativeElement.getAttribute('pointRadius') ??
-      this.pointRadius;
-    this.pointFillColor =
-      this._elementRef.nativeElement.getAttribute('pointFillColor') ??
-      this.pointFillColor;
-    this.pointStrokeColor =
-      this._elementRef.nativeElement.getAttribute('pointStrokeColor') ??
-      this.pointStrokeColor;
-    this.pointStrokeWidth =
-      this._elementRef.nativeElement.getAttribute('pointStrokeWidth') ??
-      this.pointStrokeWidth;
+    this.poiRadius =
+      this._elementRef.nativeElement.getAttribute('poiRadius') ??
+      this.poiRadius;
+    this.poiFillColor =
+      this._elementRef.nativeElement.getAttribute('poiFillColor') ??
+      this.poiFillColor;
+    this.poiStrokeColor =
+      this._elementRef.nativeElement.getAttribute('poiStrokeColor') ??
+      this.poiStrokeColor;
+    this.poiStrokeWidth =
+      this._elementRef.nativeElement.getAttribute('poiStrokeWidth') ??
+      this.poiStrokeWidth;
   }
 
   fitView(
@@ -118,11 +118,11 @@ export class AppComponent implements OnInit {
       const geometryType = feature.getGeometry().getType();
       if (geometryType === 'Point') {
         const image = new CircleStyle({
-          radius: this.pointRadius,
-          fill: new Fill({ color: this.pointFillColor }),
+          radius: this.poiRadius,
+          fill: new Fill({ color: this.poiFillColor }),
           stroke: new Stroke({
-            color: this.pointStrokeColor,
-            width: this.pointStrokeWidth,
+            color: this.poiStrokeColor,
+            width: this.poiStrokeWidth,
           }),
         });
         return new Style({ image });
