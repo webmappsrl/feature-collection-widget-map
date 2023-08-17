@@ -118,11 +118,21 @@ export class AppComponent implements OnInit {
       const geometryType = feature.getGeometry().getType();
       if (geometryType === 'Point') {
         const image = new CircleStyle({
-          radius: this.pointRadius,
-          fill: new Fill({ color: this.pointFillColor }),
+          radius: properties.pointRadius
+            ? properties.pointRadius
+            : this.pointRadius,
+          fill: new Fill({
+            color: properties.pointFillColor
+              ? properties.pointFillColor
+              : this.pointFillColor,
+          }),
           stroke: new Stroke({
-            color: this.pointStrokeColor,
-            width: this.pointStrokeWidth,
+            color: properties.pointStrokeColor
+              ? properties.pointStrokeColor
+              : this.pointStrokeColor,
+            width: properties.pointStrokeWidth
+              ? properties.pointStrokeWidth
+              : this.pointStrokeWidth,
           }),
         });
         return new Style({ image });
@@ -132,7 +142,9 @@ export class AppComponent implements OnInit {
           color: properties.strokeColor
             ? properties.strokeColor
             : this.strokeColor,
-          width: this.strokeWidth,
+          width: properties.strokeWidth
+            ? properties.strokeWidth
+            : this.strokeWidth,
         }),
         fill: new Fill({
           color: properties.fillColor ? properties.fillColor : this.fillColor,
