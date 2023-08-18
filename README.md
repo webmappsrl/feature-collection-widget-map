@@ -85,7 +85,7 @@ Copy and paste on your html code the following scripts given in the code below
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
-    <link rel="stylesheet" href="https://cdn.statically.io/gh/webmappsrl/feature-collection-widget-map/8778f562/dist/styles.css">
+    <link rel="stylesheet" href="https://cdn.statically.io/gh/webmappsrl/feature-collection-widget-map/master/dist/styles.css">
   </head>
   <body>
     <feature-collection-widget-map
@@ -166,11 +166,18 @@ Copy and paste on your html code the following scripts given in the code below
         <td>rgba(255, 255, 255, 1)</td>
         <td>Input determines the stroke (outline) color for the points on the map. It's specified as an RGBA value, following the format 'rgba(r, g, b, a)', where 'r', 'g', and 'b' are the red, green, and blue color components respectively (ranging from 0 to 255), and 'a' represents the alpha (transparency) level (ranging from 0.0 to 1.0). The default stroke color is 'rgba(255, 255, 255, 1)', representing white. This input allows you to customize the outline of your map points with any valid RGBA color.</td>
       </tr>
+      <tr>
+  <td>pointStrokeWidth</td>
+  <td>number</td>
+  <td>5</td>
+  <td>Input to determine the stroke width of the outline for points on the map. It is specified as a numeric value, representing the stroke width in pixels. The default stroke width is 5. This input allows you to customize the thickness of the outline of your map points.</td>
+</tr>
+
     </tbody>
   </table>
 </div>
 
-- If neither the `fillColor`, `strokeColor`, `pointRadius`, `pointFillColor`, nor `pointStrokeColor` input values are provided, they will each default to their pre-set values ('rgba(255, 0, 0, 1)', 'rgba(255, 255, 255, 1)', 15, 'rgba(255, 0, 0, 1)', and 'rgba(255, 255, 255, 1)' respectively). 
+- If neither the `fillColor`, `strokeColor`, `pointRadius`, `pointFillColor` `pointStrokeWidth`, or `pointStrokeColor` input values are provided, they will each default to their pre-set values ('rgba(255, 0, 0, 1)', 'rgba(255, 255, 255, 1)', 15, 'rgba(255, 0, 0, 1)', and 'rgba(255, 255, 255, 1)' respectively). 
 - However, if your GeoJSON data includes properties for 'fillColor', 'strokeColor', 'pointRadius', 'pointFillColor', and 'pointStrokeColor', these values will be used instead. 
 - In case these properties are missing in the GeoJSON data, the component will fall back to using the default values.
 
