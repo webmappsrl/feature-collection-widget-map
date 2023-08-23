@@ -6,6 +6,7 @@ import {
   ViewEncapsulation,
   SimpleChanges,
   ElementRef,
+  Renderer2,
 } from '@angular/core';
 import CircleStyle from 'ol/style/Circle';
 import Map from 'ol/Map';
@@ -42,40 +43,43 @@ export class AppComponent implements OnInit {
   @Input() pointFillColor: string = 'rgba(255, 0, 0, 1)';
   @Input() pointStrokeColor: string = 'rgba(255, 255, 255, 1)';
   @Input() pointStrokeWidth: number = 5;
+  @Input() targetReference: string = 'ol-map';
+
   map: Map | undefined;
   vectorLayer: VectorLayer<Vector<Geometry>> | undefined;
-
-  constructor(private _http: HttpClient, private _elementRef: ElementRef) {
+  constructor(
+    private _http: HttpClient,
+    private _el: ElementRef,
+    private _renderer: Renderer2
+  ) {
     this.geojsonUrl =
-      this._elementRef.nativeElement.getAttribute('geojsonUrl') ??
-      this.geojsonUrl;
+      this._el.nativeElement.getAttribute('geojsonUrl') ?? this.geojsonUrl;
     this.strokeWidth =
-      this._elementRef.nativeElement.getAttribute('strokeWidth') ??
-      this.strokeWidth;
+      this._el.nativeElement.getAttribute('strokeWidth') ?? this.strokeWidth;
     this.padding =
-      this._elementRef.nativeElement.getAttribute('padding') ?? this.padding;
+      this._el.nativeElement.getAttribute('padding') ?? this.padding;
     this.maxZoom =
-      this._elementRef.nativeElement.getAttribute('maxZoom') ?? this.maxZoom;
+      this._el.nativeElement.getAttribute('maxZoom') ?? this.maxZoom;
     this.duration =
-      this._elementRef.nativeElement.getAttribute('duration') ?? this.duration;
+      this._el.nativeElement.getAttribute('duration') ?? this.duration;
     this.fillColor =
-      this._elementRef.nativeElement.getAttribute('fillColor') ??
-      this.fillColor;
+      this._el.nativeElement.getAttribute('fillColor') ?? this.fillColor;
     this.strokeColor =
-      this._elementRef.nativeElement.getAttribute('strokeColor') ??
-      this.strokeColor;
+      this._el.nativeElement.getAttribute('strokeColor') ?? this.strokeColor;
     this.pointRadius =
-      this._elementRef.nativeElement.getAttribute('pointRadius') ??
-      this.pointRadius;
+      this._el.nativeElement.getAttribute('pointRadius') ?? this.pointRadius;
     this.pointFillColor =
-      this._elementRef.nativeElement.getAttribute('pointFillColor') ??
+      this._el.nativeElement.getAttribute('pointFillColor') ??
       this.pointFillColor;
     this.pointStrokeColor =
-      this._elementRef.nativeElement.getAttribute('pointStrokeColor') ??
+      this._el.nativeElement.getAttribute('pointStrokeColor') ??
       this.pointStrokeColor;
     this.pointStrokeWidth =
-      this._elementRef.nativeElement.getAttribute('pointStrokeWidth') ??
+      this._el.nativeElement.getAttribute('pointStrokeWidth') ??
       this.pointStrokeWidth;
+
+    // console.log('geojsonUrl:', this.geojsonUrl);
+    // console.log('targetReference:', this.targetReference);
   }
 
   fitView(
@@ -161,7 +165,7 @@ export class AppComponent implements OnInit {
     if (this.map != null) {
       this.map.addLayer(this.vectorLayer);
       const extent = vectorSource.getExtent();
-      console.log(this.maxZoom);
+      // console.log(this.maxZoom);
       if (extent != null) {
         const optOptions: FitOptions = {
           duration: this.duration,
@@ -172,8 +176,12 @@ export class AppComponent implements OnInit {
       }
     }
   }
-
   private _initMap(): void {
+    const mapDiv = this._renderer.createElement('div');
+    this._renderer.setAttribute(mapDiv, 'id', this.targetReference);
+    this._renderer.addClass(mapDiv, 'map');
+    this._renderer.appendChild(this._el.nativeElement, mapDiv);
+
     this._view = new View({
       maxZoom: 22,
       zoom: 5,
@@ -211,7 +219,8 @@ export class AppComponent implements OnInit {
           preload: Infinity,
         }),
       ],
-      target: 'ol-map',
+      target: mapDiv,
     });
+    // console.log('Mappa inizializzata:', this.map);
   }
 }
