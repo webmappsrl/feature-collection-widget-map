@@ -75,7 +75,7 @@ Now your custom domain is ready to be shared
 ## Usage
 Once the web component has been created here's an example how to include it in an html page
 ```html
-  <feature-collection-widget-map geojsonUrl="https://sisteco.maphub.it/api/v1/geom/cadastralparcel/664" strokeWidth="5" padding="20" maxZoom="15" duration="5" fillColor="rgba(28, 146, 51, 1)" strokeColor="rgba(58, 146, 51, 1)" pointRadius="3" pointFillColor="rgba(190, 161, 161, 1)" pointStrokeColor="rgba(29, 235, 67, 1)"></feature-collection-widget-map>
+  <feature-collection-widget-map geojsonUrl="https://sisteco.maphub.it/api/v1/geom/cadastralparcel/664" strokeWidth="5" padding="20" maxZoom="15" duration="5" fillColor="rgba(28, 146, 51, 1)" strokeColor="rgba(58, 146, 51, 1)" pointRadius="3" pointFillColor="rgba(190, 161, 161, 1)" pointStrokeColor="rgba(29, 235, 67, 1)" pointStrokeWidth="2" targetReference="13" ></feature-collection-widget-map>
 ```
 Copy and paste on your html code the following scripts given in the code below
 ```html
@@ -171,6 +171,12 @@ Copy and paste on your html code the following scripts given in the code below
   <td>number</td>
   <td>5</td>
   <td>Input to determine the stroke width of the outline for points on the map. It is specified as a numeric value, representing the stroke width in pixels. The default stroke width is 5. This input allows you to customize the thickness of the outline of your map points.</td>
+</tr>
+   <tr>
+  <td>targetReference</td>
+  <td>string</td>
+  <td>ol-map</td>
+  <td>Input assigning the ID of the HTML element where the map will be rendered.</td>
 </tr>
 
     </tbody>
