@@ -7,6 +7,7 @@ import {
   SimpleChanges,
   ElementRef,
   Renderer2,
+  ViewChild,
 } from '@angular/core';
 import CircleStyle from 'ol/style/Circle';
 import Map from 'ol/Map';
@@ -30,23 +31,27 @@ import Style from 'ol/style/Style';
   encapsulation: ViewEncapsulation.None,
 })
 export class AppComponent implements OnInit {
+  private _mapDiv:any;
   private _view: View | undefined;
 
   @Input() duration: number = 0;
+  @Input() fillColor: string = 'rgba(255, 0, 0, 1)';
   @Input() geojsonUrl: string | undefined;
   @Input() maxZoom: number = 17;
   @Input() padding: number = 10;
-  @Input() strokeWidth: number = 2;
-  @Input() fillColor: string = 'rgba(255, 0, 0, 1)';
-  @Input() strokeColor: string = 'rgba(255, 255, 255, 1)';
-  @Input() pointRadius: number = 15;
   @Input() pointFillColor: string = 'rgba(255, 0, 0, 1)';
+  @Input() pointRadius: number = 15;
   @Input() pointStrokeColor: string = 'rgba(255, 255, 255, 1)';
   @Input() pointStrokeWidth: number = 5;
+  @Input() strokeColor: string = 'rgba(255, 255, 255, 1)';
+  @Input() strokeWidth: number = 2;
   @Input() targetReference: string = 'ol-map';
+  @Input() toIMG: boolean = false;
+  @ViewChild('exportedImage') exportedImage: ElementRef<HTMLImageElement> | undefined;
 
   map: Map | undefined;
   vectorLayer: VectorLayer<Vector<Geometry>> | undefined;
+
   constructor(
     private _http: HttpClient,
     private _el: ElementRef,
@@ -82,6 +87,67 @@ export class AppComponent implements OnInit {
     // console.log('targetReference:', this.targetReference);
   }
 
+  ngOnInit(): void {
+    this._initMap();
+    if (this.geojsonUrl != null) {
+      this._http.get<any>(this.geojsonUrl).subscribe((geojson: any) => {
+        this._buildGeojson(geojson);
+      });
+    }
+    if(this.toIMG === true) {
+      this.convertMapToIMG();
+
+    }
+  }
+
+  convertMapToIMG(): void {
+    this.map?.once('rendercomplete', () => {
+      const mapCanvas = document.createElement('canvas');
+      const size = this.map?.getSize();
+      if (size) {
+        mapCanvas.width = size[0];
+        mapCanvas.height = size[1];
+        const mapContext = mapCanvas.getContext('2d');
+        if (mapContext) {
+          Array.from(this.map?.getViewport().querySelectorAll('.ol-layer canvas') || [])
+            .forEach((canvas: any) => {
+              if (canvas.width > 0) {
+                const opacity = canvas.parentElement?.style.opacity || canvas.style.opacity;
+                mapContext.globalAlpha = opacity === '' ? 1 : Number(opacity);
+    
+                const transform = canvas.style.transform;
+                const matrix = transform
+                  ? transform.match(/^matrix\(([^\(]*)\)$/)?.[1].split(',').map(Number)
+                  : [parseFloat(canvas.style.width) / canvas.width, 0, 0, parseFloat(canvas.style.height) / canvas.height, 0, 0];
+                
+                if (matrix) {
+                  mapContext.setTransform(...matrix);
+                }
+                
+                const backgroundColor = canvas.parentElement?.style.backgroundColor;
+                if (backgroundColor) {
+                  mapContext.fillStyle = backgroundColor;
+                  mapContext.fillRect(0, 0, canvas.width, canvas.height);
+                }
+                
+                mapContext.drawImage(canvas, 0, 0);
+              }
+            });
+    
+          mapContext.globalAlpha = 1;
+          mapContext.setTransform(1, 0, 0, 1, 0, 0);
+    
+          if (this.exportedImage && this.exportedImage.nativeElement) {
+            this.exportedImage.nativeElement.src = mapCanvas.toDataURL();
+          }
+        }
+      }
+    });
+    this.map?.renderSync();
+    this._renderer.removeChild(this._mapDiv.parentNode, this._mapDiv);
+    this._mapDiv = null;
+  }
+
   fitView(
     geometryOrExtent: SimpleGeometry | Extent,
     optOptions?: FitOptions
@@ -93,19 +159,6 @@ export class AppComponent implements OnInit {
     }
     if (this._view != null) {
       this._view.fit(geometryOrExtent, optOptions);
-    }
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
-  }
-
-  ngOnInit(): void {
-    this._initMap();
-    if (this.geojsonUrl != null) {
-      this._http.get<any>(this.geojsonUrl).subscribe((geojson: any) => {
-        this._buildGeojson(geojson);
-      });
     }
   }
 
@@ -176,11 +229,12 @@ export class AppComponent implements OnInit {
       }
     }
   }
+
   private _initMap(): void {
-    const mapDiv = this._renderer.createElement('div');
-    this._renderer.setAttribute(mapDiv, 'id', this.targetReference);
-    this._renderer.addClass(mapDiv, 'map');
-    this._renderer.appendChild(this._el.nativeElement, mapDiv);
+    this._mapDiv = this._renderer.createElement('div');
+    this._renderer.setAttribute(this._mapDiv, 'id', this.targetReference);
+    this._renderer.addClass(this._mapDiv, 'map');
+    this._renderer.appendChild(this._el.nativeElement, this._mapDiv);
 
     this._view = new View({
       maxZoom: 22,
@@ -212,6 +266,7 @@ export class AppComponent implements OnInit {
             minZoom: 7,
             maxZoom: 22,
             cacheSize: 5000,
+            crossOrigin:'anonymous'
           }),
           visible: true,
           zIndex: 0,
@@ -219,7 +274,7 @@ export class AppComponent implements OnInit {
           preload: Infinity,
         }),
       ],
-      target: mapDiv,
+      target: this._mapDiv,
     });
     // console.log('Mappa inizializzata:', this.map);
   }
