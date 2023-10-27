@@ -4,7 +4,6 @@ import {
   Input,
   OnInit,
   ViewEncapsulation,
-  SimpleChanges,
   ElementRef,
   Renderer2,
   ViewChild,
@@ -47,7 +46,6 @@ export class AppComponent implements OnInit {
   @Input() strokeWidth: number = 2;
   @Input() targetReference: string = 'ol-map';
   @Input() toIMG: boolean = false;
-  @ViewChild('exportedImage') exportedImage: ElementRef<HTMLImageElement> | undefined;
 
   map: Map | undefined;
   vectorLayer: VectorLayer<Vector<Geometry>> | undefined;
@@ -82,22 +80,8 @@ export class AppComponent implements OnInit {
     this.pointStrokeWidth =
       this._el.nativeElement.getAttribute('pointStrokeWidth') ??
       this.pointStrokeWidth;
-
-    // console.log('geojsonUrl:', this.geojsonUrl);
-    // console.log('targetReference:', this.targetReference);
-  }
-
-  ngOnInit(): void {
-    this._initMap();
-    if (this.geojsonUrl != null) {
-      this._http.get<any>(this.geojsonUrl).subscribe((geojson: any) => {
-        this._buildGeojson(geojson);
-      });
-    }
-    if(this.toIMG === true) {
-      this.convertMapToIMG();
-
-    }
+    this.toIMG =
+      this._stringToBoolean(this._el.nativeElement.getAttribute('toIMG')) ?? this.toIMG;
   }
 
   convertMapToIMG(): void {
@@ -137,13 +121,16 @@ export class AppComponent implements OnInit {
           mapContext.globalAlpha = 1;
           mapContext.setTransform(1, 0, 0, 1, 0, 0);
     
-          if (this.exportedImage && this.exportedImage.nativeElement) {
-            this.exportedImage.nativeElement.src = mapCanvas.toDataURL();
+          if (img) {
+            img.src = mapCanvas.toDataURL();
           }
         }
       }
     });
     this.map?.renderSync();
+    const img = this._renderer.createElement('img');
+    this._renderer.setAttribute(img, 'style', 'width: 100%');
+    this._renderer.appendChild(this._el.nativeElement, img);
     this._renderer.removeChild(this._mapDiv.parentNode, this._mapDiv);
     this._mapDiv = null;
   }
@@ -159,6 +146,18 @@ export class AppComponent implements OnInit {
     }
     if (this._view != null) {
       this._view.fit(geometryOrExtent, optOptions);
+    }
+  }
+
+  ngOnInit(): void {
+    this._initMap();
+    if (this.geojsonUrl != null) {
+      this._http.get<any>(this.geojsonUrl).subscribe((geojson: any) => {
+        this._buildGeojson(geojson);
+      });
+    }
+    if(this.toIMG) {
+      this.convertMapToIMG();
     }
   }
 
@@ -218,7 +217,6 @@ export class AppComponent implements OnInit {
     if (this.map != null) {
       this.map.addLayer(this.vectorLayer);
       const extent = vectorSource.getExtent();
-      // console.log(this.maxZoom);
       if (extent != null) {
         const optOptions: FitOptions = {
           duration: this.duration,
@@ -276,6 +274,9 @@ export class AppComponent implements OnInit {
       ],
       target: this._mapDiv,
     });
-    // console.log('Mappa inizializzata:', this.map);
+  }
+
+  private _stringToBoolean(value:string):boolean {
+    return value === 'true';
   }
 }
