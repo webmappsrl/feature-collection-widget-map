@@ -1,4 +1,5 @@
 # Feature collection widget map
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.19.
 
 This component is a versatile and customizable map component. It allows users to display geojson data on the map and control various aspects of the map such as zoom levels, padding, and stroke width. This component also provides the ability to fetch geojson data from a URL, making it easy to integrate different data sources. Additionally, the map is built on the OpenLayers library, which offers a robust and feature-rich mapping solution. With its encapsulated styling and multiple configuration options, this component can be easily integrated into any application for a tailored user experience.
@@ -7,31 +8,39 @@ This component is a versatile and customizable map component. It allows users to
 
 ## Development server
 
-Run 
+Run
+
 ```bash
 ng serve
-``` 
+```
+
 for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
 <hr>
 
 ## How to build the web component
+
 First install all necessary dependencies inside the component path
+
 ```bash
 npm install
 ```
+
 Install angular elements
+
 ```bash
 ng add @angular/elements
 ```
 
 In the outputPath inside angular.json file,
 you can change the destination folder of the files to be copied to use the web component
+
 ```php
 "outputPath": "dist"
 ```
 
 Inside the `app.module.ts` file make the following changes
+
 ```typescript
 export class AppModule {
   constructor(private injector: Injector) {
@@ -39,14 +48,18 @@ export class AppModule {
     customElements.define('feature-collection-widget-map', mapElement);
   }
   }
-  ```
+```
+
 in `@ngModule` bootstrap indicates which component of the project will be built
+
 ```typescript
 @NgModule({
   bootstrap: [AppComponent],
 })
- ```
- Now launch from the terminal inside the component path
+```
+
+Now launch from the terminal inside the component path
+
 ```bash
 ng build --prod --output-hashing=none
 ```
@@ -54,30 +67,41 @@ ng build --prod --output-hashing=none
 <hr>
 
 ## Test the component
+
 You can use surge to test the component.
-Surge is a free and easy-to-use static hosting service, designed for quickly deploying web applications and static websites directly from the command line. It is ideal for developers who want to rapidly deploy frontend projects, such as websites based on HTML, CSS, and JavaScript. 
+Surge is a free and easy-to-use static hosting service, designed for quickly deploying web applications and static websites directly from the command line. It is ideal for developers who want to rapidly deploy frontend projects, such as websites based on HTML, CSS, and JavaScript.
 To get started with Surge, you can install the package through npm using the command:
+
 ```bash
 npm install --global surge
 ```
+
 Now run surge inside the dist folder
+
 ```bash
 surge
 ```
+
 Follow the instructions and once you reach domain rename it, better to always use the same name every time it is updated
+
 ```bash
 example-name.surge.sh
 ```
+
 Now your custom domain is ready to be shared
 
 <hr>
 
 ## Usage
+
 Once the web component has been created here's an example how to include it in an html page
+
 ```html
   <feature-collection-widget-map geojsonUrl="https://sisteco.maphub.it/api/v1/geom/cadastralparcel/664" strokeWidth="5" padding="20" maxZoom="15" duration="5" fillColor="rgba(28, 146, 51, 1)" strokeColor="rgba(58, 146, 51, 1)" pointRadius="3" pointFillColor="rgba(190, 161, 161, 1)" pointStrokeColor="rgba(29, 235, 67, 1)" pointStrokeWidth="2" targetReference="13" ></feature-collection-widget-map>
 ```
+
 Copy and paste on your html code the following scripts given in the code below
+
 ```html
     <head>
     <meta charset="utf-8" />
@@ -155,6 +179,12 @@ Copy and paste on your html code the following scripts given in the code below
         <td>Input allows you to set the radius of points (in pixels) for features on your map. By default, the radius is set to 15 pixels. This value can be adjusted to better suit the aesthetic and visibility requirements of your specific application.</td>
       </tr>
       <tr>
+        <td>pointPosition</td>
+        <td>boolean</td>
+        <td>false</td>
+        <td>show inside de circle the index position</td>
+      </tr>
+      <tr>
         <td>pointFillColor</td>
         <td>string</td>
         <td>rgba(255, 0, 0, 1)</td>
@@ -180,10 +210,10 @@ Copy and paste on your html code the following scripts given in the code below
 </tr>
 
     </tbody>
+
   </table>
 </div>
 
-- If neither the `fillColor`, `strokeColor`, `pointRadius`, `pointFillColor` `pointStrokeWidth`, or `pointStrokeColor` input values are provided, they will each default to their pre-set values ('rgba(255, 0, 0, 1)', 'rgba(255, 255, 255, 1)', 15, 'rgba(255, 0, 0, 1)', and 'rgba(255, 255, 255, 1)' respectively). 
-- However, if your GeoJSON data includes properties for 'fillColor', 'strokeColor', 'pointRadius', 'pointFillColor', and 'pointStrokeColor', these values will be used instead. 
+- If neither the `fillColor`, `strokeColor`, `pointRadius`, `pointFillColor` `pointStrokeWidth`, or `pointStrokeColor` input values are provided, they will each default to their pre-set values ('rgba(255, 0, 0, 1)', 'rgba(255, 255, 255, 1)', 15, 'rgba(255, 0, 0, 1)', and 'rgba(255, 255, 255, 1)' respectively).
+- However, if your GeoJSON data includes properties for 'fillColor', 'strokeColor', 'pointRadius', 'pointFillColor', and 'pointStrokeColor', these values will be used instead.
 - In case these properties are missing in the GeoJSON data, the component will fall back to using the default values.
-
