@@ -14,7 +14,7 @@ Run
 ng serve
 ```
 
-for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files. Important to note that you have to work with nvm 16.
 
 <hr>
 
@@ -97,7 +97,7 @@ Now your custom domain is ready to be shared
 Once the web component has been created here's an example how to include it in an html page
 
 ```html
-  <feature-collection-widget-map geojsonUrl="https://sisteco.maphub.it/api/v1/geom/cadastralparcel/664" strokeWidth="5" padding="20" maxZoom="15" duration="5" fillColor="rgba(28, 146, 51, 1)" strokeColor="rgba(58, 146, 51, 1)" pointRadius="3" pointFillColor="rgba(190, 161, 161, 1)" pointStrokeColor="rgba(29, 235, 67, 1)" pointStrokeWidth="2" targetReference="13" ></feature-collection-widget-map>
+  <feature-collection-widget-map geojsonUrl="https://sisteco.maphub.it/api/v1/geom/cadastralparcel/664" strokeWidth="5" padding="20" maxZoom="15" duration="5" fillColor="rgba(28, 146, 51, 1)" strokeColor="rgba(58, 146, 51, 1)" pointRadius="3" pointFillColor="rgba(190, 161, 161, 1)" pointStrokeColor="rgba(29, 235, 67, 1)" pointStrokeWidth="2" targetReference="13" showcontrolzoom="true" mousewheelzoom="true" dragpan="true" toIMG="true"></feature-collection-widget-map>
 ```
 
 Copy and paste on your html code the following scripts given in the code below
@@ -208,7 +208,30 @@ Copy and paste on your html code the following scripts given in the code below
   <td>ol-map</td>
   <td>Input assigning the ID of the HTML element where the map will be rendered.</td>
 </tr>
-
+<tr>
+  <td>showControlZoom</td>
+  <td>boolean</td>
+  <td>false</td>
+  <td>This input enables or disables the zoom controls on the map. When set to 'true', zoom in and zoom out buttons are displayed, allowing users to interactively control the zoom level of the map. The default value is 'false', meaning the zoom controls are not displayed unless explicitly enabled.</td>
+</tr>
+<tr>
+  <td>mouseWheelZoom</td>
+  <td>boolean</td>
+  <td>false</td>
+  <td>This input allows users to enable or disable zooming on the map using the mouse wheel. When set to 'true', scrolling the mouse wheel over the map zooms in or out. This provides an intuitive way for users to control the zoom level of the map. The default setting is 'false', which disables zooming with the mouse wheel to prevent unintentional map zooming during scroll.</td>
+</tr>
+<tr>
+  <td>dragPan</td>
+  <td>boolean</td>
+  <td>false</td>
+  <td>This input enables or disables the ability to pan the map by clicking and dragging. Setting this to 'true' allows users to move the map view by clicking and dragging the map in any direction. This feature enhances the navigability of the map, making it easier for users to explore different areas. The default value is 'false', which disables drag-to-pan functionality.</td>
+</tr>
+<tr>
+  <td>toIMG</td>
+  <td>boolean</td>
+  <td>false</td>
+  <td>This input determines whether the map should be converted to an image. When set to 'true', the map rendering completes and then is converted into a static image displayed on the page. This can be useful for creating a snapshot of the map for sharing or embedding in documents. The default value is 'false', meaning the map remains interactive and not converted to an image.</td>
+</tr>
     </tbody>
 
   </table>
