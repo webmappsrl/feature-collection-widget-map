@@ -17,7 +17,7 @@ import XYZ from 'ol/source/XYZ';
 import Stroke from 'ol/style/Stroke';
 import Style from 'ol/style/Style';
 import {Coordinate} from 'ol/coordinate';
-import {fromLonLat, toLonLat, transform} from 'ol/proj';
+import {fromLonLat, toLonLat} from 'ol/proj';
 
 @Component({
   selector: 'feature-collection-widget-map',
@@ -29,16 +29,19 @@ export class AppComponent implements OnInit {
   private _mapDiv: any;
   private _view: View | undefined;
 
+  @Input() dragPan: boolean = false;
   @Input() duration: number = 0;
   @Input() fillColor: string = 'rgba(255, 0, 0, 1)';
   @Input() geojsonUrl: string | undefined;
   @Input() maxZoom: number = 17;
+  @Input() mouseWheelZoom: boolean = false;
   @Input() padding: number = 10;
   @Input() pointFillColor: string = 'rgba(255, 0, 0, 1)';
   @Input() pointPosition: boolean = false;
   @Input() pointRadius: number = 15;
   @Input() pointStrokeColor: string = 'rgba(255, 255, 255, 1)';
   @Input() pointStrokeWidth: number = 5;
+  @Input() showControlZoom: boolean = false;
   @Input() strokeColor: string = 'rgba(255, 255, 255, 1)';
   @Input() strokeWidth: number = 2;
   @Input() targetReference: string = 'ol-map';
@@ -66,18 +69,14 @@ export class AppComponent implements OnInit {
     this.pointPosition =
       this._stringToBoolean(this._el.nativeElement.getAttribute('pointPosition')) ??
       this.pointPosition;
-  }
-
-  ngOnInit(): void {
-    this._initMap();
-    if (this.geojsonUrl != null) {
-      this._http.get<any>(this.geojsonUrl).subscribe((geojson: any) => {
-        this._buildGeojson(geojson);
-      });
-    }
-    if (this.toIMG) {
-      this.convertMapToIMG();
-    }
+    this.showControlZoom =
+      this._stringToBoolean(this._el.nativeElement.getAttribute('showControlZoom')) ??
+      this.showControlZoom;
+    this.mouseWheelZoom =
+      this._stringToBoolean(this._el.nativeElement.getAttribute('mouseWheelZoom')) ??
+      this.mouseWheelZoom;
+    this.dragPan =
+      this._stringToBoolean(this._el.nativeElement.getAttribute('dragPan')) ?? this.dragPan;
   }
 
   convertMapToIMG(): void {
@@ -150,6 +149,18 @@ export class AppComponent implements OnInit {
     }
     if (this._view != null) {
       this._view.fit(geometryOrExtent, optOptions);
+    }
+  }
+
+  ngOnInit(): void {
+    this._initMap();
+    if (this.geojsonUrl != null) {
+      this._http.get<any>(this.geojsonUrl).subscribe((geojson: any) => {
+        this._buildGeojson(geojson);
+      });
+    }
+    if (this.toIMG) {
+      this.convertMapToIMG();
     }
   }
 
@@ -360,11 +371,11 @@ export class AppComponent implements OnInit {
       controls: defaultControls({
         rotate: false,
         attribution: false,
-        zoom: false,
+        zoom: this.showControlZoom,
       }),
       interactions: defaultInteraction({
-        mouseWheelZoom: false,
-        dragPan: false,
+        mouseWheelZoom: this.mouseWheelZoom,
+        dragPan: this.dragPan,
         doubleClickZoom: false,
       }),
       layers: [
