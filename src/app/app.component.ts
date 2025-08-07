@@ -162,6 +162,32 @@ export class AppComponent implements OnInit {
     if (this.toIMG) {
       this.convertMapToIMG();
     }
+
+    this.map?.on('click', event => {
+      this.map?.forEachFeatureAtPixel(event.pixel, feature => {
+        const link = feature.get('link');
+        if (link) {
+          window.open(link, '_blank');
+        }
+      });
+    });
+
+    this.map?.on('pointermove', event => {
+      const pixel = this.map?.getEventPixel(event.originalEvent);
+      if (pixel) {
+        const hit = this.map?.hasFeatureAtPixel(pixel);
+        if (hit) {
+          this.map?.forEachFeatureAtPixel(pixel, feature => {
+            const tooltipText = feature.get('tooltip');
+            if (tooltipText) {
+              this._showTooltip(event.originalEvent, tooltipText);
+            }
+          });
+        } else {
+          this._hideTooltip();
+        }
+      }
+    });
   }
 
   private _arrangePointsInSpiral(
@@ -401,5 +427,31 @@ export class AppComponent implements OnInit {
 
   private _stringToBoolean(value: string): boolean {
     return value === 'true';
+  }
+
+  private _showTooltip(event: MouseEvent, text: string): void {
+    let tooltip = document.getElementById('map-tooltip');
+    if (!tooltip) {
+      tooltip = document.createElement('div');
+      tooltip.id = 'map-tooltip';
+      tooltip.style.position = 'absolute';
+      tooltip.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+      tooltip.style.color = 'white';
+      tooltip.style.padding = '5px';
+      tooltip.style.borderRadius = '3px';
+      tooltip.style.pointerEvents = 'none';
+      document.body.appendChild(tooltip);
+    }
+    tooltip.innerText = text;
+    tooltip.style.left = `${event.pageX + 10}px`;
+    tooltip.style.top = `${event.pageY + 10}px`;
+    tooltip.style.display = 'block';
+  }
+
+  private _hideTooltip(): void {
+    const tooltip = document.getElementById('map-tooltip');
+    if (tooltip) {
+      tooltip.style.display = 'none';
+    }
   }
 }
