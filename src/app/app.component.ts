@@ -195,6 +195,10 @@ export class AppComponent implements OnInit {
     spacing: number,
     expansion: number,
   ): Feature<Point>[] {
+    if (pointsFeatures.length <= 1) {
+      return pointsFeatures;
+    }
+
     let angle = 0; // Angolo iniziale
     let radius = 0;
     const arrangedPoints: Feature<Point>[] = [];
@@ -326,7 +330,7 @@ export class AppComponent implements OnInit {
   }
 
   private _clusterFeaturesByProximity(features: Feature<Point>[]): Feature<Point>[][] {
-    const distanceThreshold = this.pointRadius * 30;
+    const distanceThreshold = this.pointRadius * 5;
     // Funzione per calcolare la distanza tra due punti
     const calculateDistance = (coord1: Coordinate, coord2: Coordinate) => {
       return Math.sqrt(Math.pow(coord1[0] - coord2[0], 2) + Math.pow(coord1[1] - coord2[1], 2));
